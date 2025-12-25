@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16.11-alpine3.23
+    container_name: ecom_shaker_db
+    restart: always
+    environment:
+      POSTGRES_DB: ecom_shaker
+      POSTGRES_USER: ecom_user
+      POSTGRES_PASSWORD: ecom_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: ecom_shaker_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ecom_shaker
+      - SPRING_DATASOURCE_USERNAME=ecom_user
+      - SPRING_DATASOURCE_PASSWORD=ecom_password
+      - STRIPE_SECRET_KEY=sk_test_fsdfsdfsd
+    volumes:
+      - ./product_images:/app/product_images
+
+volumes:
+  postgres_data:
