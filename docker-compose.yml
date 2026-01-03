@@ -12,6 +12,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  vectordb:
+    image: 'qdrant/qdrant:latest'
+    container_name: ecom_shaker_vectordb
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+
   backend:
     build: .
     container_name: ecom_shaker_app
@@ -19,6 +26,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - vectordb
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ecom_shaker
       - SPRING_DATASOURCE_USERNAME=ecom_user
@@ -29,3 +37,4 @@ services:
 
 volumes:
   postgres_data:
+

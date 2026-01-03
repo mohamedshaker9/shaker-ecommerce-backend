@@ -72,6 +72,8 @@ public class CategoryService implements ICategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", id));
     }
 
+
+
     @Override
     public CategoryDTO update(Long id, CategoryDTO categoryDto) throws ResourceNotFoundException {
         Category existingCategory = categoryRepo.findById(id)

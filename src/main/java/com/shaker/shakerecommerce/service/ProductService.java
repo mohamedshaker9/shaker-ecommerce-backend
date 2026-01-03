@@ -131,6 +131,22 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public ProductResponse getByCategory(String name) throws ResourceNotFoundException {
+
+        Category category = categoryRepo.findByNameIgnoreCase(name)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category", "name", name)
+                );
+
+        return getByCategory(category.getId());
+
+
+    }
+
+
+
+
+    @Override
     public ProductResponse getByKeyword(String keyword){
         List<Product> products = IProductRepo.findByNameContainsIgnoreCase(keyword);
 
